@@ -34,18 +34,18 @@ A full-stack, cloud-ready web application simulating a real-time **Military-Grad
 
 ```mermaid
 flowchart TD
-    A["Edge Node Simulator (10 Hz)"] -->|Raw Radar Telemetry| B["Flask-SocketIO Core Server"]
-    B -->|Radial Velocity and Bins| C["Military ML Classifier Engine"]
+    A[Edge Node Simulator 10Hz] -->|Raw Radar Telemetry| B[Flask-SocketIO Core Server]
+    B -->|Radial Velocity and Spectrum Bins| C[Military ML Classifier Engine]
     C -->|Target Class and Threat Level| B
-    B -->|WebSocket Stream (10 Hz)| D["Single-Page Dashboard (SPA)"]
-    B -->|Throttled Persistence| E["Database (PostgreSQL / SQLite)"]
+    B -->|WebSocket Stream 10Hz| D[Single Page Dashboard SPA]
+    B -->|Throttled Persistence| E[Database PostgreSQL or SQLite]
 
     subgraph Frontend Console HUD
-        D --> F["HTML5 Canvas Waterfall Spectrogram"]
-        D --> G["Live Target PPI Radar Scope (360 Sweep)"]
-        D --> H["Chart.js Doppler Trend Line"]
-        D --> I["Military AI Classification Feed"]
-        D --> J["Header Device Mode Switcher (Lap, Tab, Mobile)"]
+        D --> F[HTML5 Canvas Waterfall Spectrogram]
+        D --> G[Live Target PPI Radar Scope 360 Sweep]
+        D --> H[Chart.js Doppler Trend Line]
+        D --> I[Military AI Classification Feed]
+        D --> J[Header Device Mode Switcher]
     end
 ```
 
