@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGMA-9 &middot; Micro-Doppler Radar Operations Console</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="scanline-overlay" aria-hidden="true"></div>
+
+<!-- Single Header for unified navigation -->
+<header class="console-header">
+  <div class="brand">
+    <span class="brand-mark">&#9670;</span>
+    <div class="brand-text">
+      <h1>SIGMA-9</h1>
+      <p>Micro-Doppler Target Classification Console</p>
+    </div>
+  </div>
+
+  <!-- Tab Buttons -->
+  <nav class="console-nav" id="mainNav">
+    <button class="nav-tab active" data-tab="overview" type="button">Operations Overview</button>
+    <button class="nav-tab" data-tab="console" type="button">Live Console</button>
+    <button class="nav-tab" data-tab="history" type="button">Mission Log</button>
+    <button class="nav-tab" data-tab="diagnostics" type="button">System Diagnostics</button>
+  </nav>
+
+  <!-- Device Mode Selector Switcher (Lap, Tab, Mobile) -->
+  <div class="device-mode-selector" id="deviceModeSelector">
+    <button class="device-btn active" data-mode="lap" title="Laptop / Desktop Mode" type="button">💻 Lap</button>
+    <button class="device-btn" data-mode="tab" title="Tablet Mode" type="button">📟 Tab</button>
+    <button class="device-btn" data-mode="mobile" title="Mobile Field HUD" type="button">📱 Mobile</button>
+  </div>
+
+  <div class="conn-status" id="connStatus">
+    <span class="conn-dot" id="connDot"></span>
+    <span id="connLabel">CONNECTING&hellip;</span>
+  </div>
+</header>
+
+<div class="app-body">
+
+  <!-- ================= TAB 1: OPERATIONS OVERVIEW (WELCOME PORTAL) ================= -->
+  <section class="tab-pane active" id="tab-overview">
+    <div class="start-container">
+
+      <!-- Hero Section with Animated Radar Scanner Widget -->
+      <section class="hero-card">
+        <div class="hero-grid-layout">
+          <div class="hero-text-content">
+            <div class="hero-badge"><span class="badge-pulse"></span> 24.125 GHz RF RADAR MATRIX ACTIVE</div>
+            <h1 class="hero-title">TACTICAL MICRO-DOPPLER SURVEILLANCE & AI CLASSIFICATION PORTAL</h1>
+            <p class="hero-subtitle">
+              Welcome to <strong>SIGMA-9</strong> — a real-time radio-frequency spectral analysis system. Powered by short-time Fourier transform (STFT) spectrogram visualization, micro-Doppler physics, and deep convolutional target classification.
+            </p>
+
+            <div class="hero-cta-group">
+              <button class="btn btn-primary btn-hero switch-tab-btn" data-target="console" type="button">
+                <span class="btn-icon">&#9654;</span> Launch Live Spectrogram Console
+              </button>
+              <button class="btn btn-ghost btn-hero switch-tab-btn" data-target="history" type="button">
+                <span class="btn-icon">&#9776;</span> Mission Historical Logs
+              </button>
+              <button class="btn btn-ghost btn-hero switch-tab-btn" data-target="diagnostics" type="button">
+                <span class="btn-icon">&#9881;</span> Fleet Diagnostics
+              </button>
+            </div>
+          </div>
+
+          <!-- Animated Radar Scanner Display -->
+          <div class="radar-scanner-widget" title="Live Radar Range Grid">
+            <div class="radar-ring ring-1"></div>
+            <div class="radar-ring ring-2"></div>
+            <div class="radar-ring ring-3"></div>
+            <div class="radar-axis-h"></div>
+            <div class="radar-axis-v"></div>
+            <div class="radar-sweep-line"></div>
+            <div class="radar-blip blip-1" title="Target: Drone"></div>
+            <div class="radar-blip blip-2" title="Target: Human"></div>
+            <div class="radar-blip blip-3" title="Target: Bird"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- System Metrics Ribbon -->
+      <section class="metrics-ribbon">
+        <div class="metric-box">
+          <span class="metric-val">24.125 GHz</span>
+          <span class="metric-lbl">Radar Carrier Freq</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-val">10 Hz</span>
+          <span class="metric-lbl">Telemetry Refresh Rate</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-val">64 Bins</span>
+          <span class="metric-lbl">FFT Spectrogram Channels</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-val">sim-cnn-v1</span>
+          <span class="metric-lbl">Active ML Classifier Engine</span>
+        </div>
+      </section>
+
+      <!-- Architecture Pipeline Flowchart -->
+      <section class="pipeline-section">
+        <div class="panel-head">
+          <h2>System Architecture Pipeline</h2>
+        </div>
+        <div class="pipeline-flow">
+          <div class="pipeline-step">
+            <span class="pipeline-num">STEP 01</span>
+            <span class="pipeline-title">24 GHz FMCW Radar</span>
+            <span class="pipeline-desc">Emits radio frequency pulses and receives micro-Doppler phase shifts from moving targets.</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-num">STEP 02</span>
+            <span class="pipeline-title">64-Bin STFT Transform</span>
+            <span class="pipeline-desc">Converts raw time-domain IQ signals into 64 frequency magnitude channels at 10 Hz.</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-num">STEP 03</span>
+            <span class="pipeline-title">CNN Classifier Model</span>
+            <span class="pipeline-desc">Evaluates spectral texture, Doppler frequency, and velocity parameters to compute target confidence.</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipeline-num">STEP 04</span>
+            <span class="pipeline-title">Real-Time HUD Feed</span>
+            <span class="pipeline-desc">Streams live waterfall spectrogram and classification cards to WebSockets HUD and PostgreSQL database.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Command Module Cards Grid -->
+      <section class="start-grid">
+
+        <div class="start-card">
+          <div class="card-header">
+            <div class="card-icon">&#9638;</div>
+            <h3>Live Micro-Doppler Waterfall</h3>
+          </div>
+          <p class="card-desc">
+            Streams real-time 64-channel STFT frequency bin magnitudes at 10 Hz over WebSockets, rendering a resolution-independent scrolling waterfall spectrogram.
+          </p>
+          <div class="card-tags">
+            <span class="tag">HTML5 Canvas</span>
+            <span class="tag">WebSockets</span>
+            <span class="tag">10 Hz Feed</span>
+          </div>
+          <button class="btn-text-link switch-tab-btn" data-target="console" type="button">Open Live Console &rarr;</button>
+        </div>
+
+        <div class="start-card">
+          <div class="card-header">
+            <div class="card-icon">&#9889;</div>
+            <h3>AI Classification Engine</h3>
+          </div>
+          <p class="card-desc">
+            Processes radial velocity ($v$), Doppler frequency shift ($f_d$), and spectral texture variance ($\sigma^2$) to classify targets with real-time confidence scores.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Rotor Blade Flutter</span>
+            <span class="tag">Wingbeat Gait</span>
+            <span class="tag">Confidence Scoring</span>
+          </div>
+          <button class="btn-text-link switch-tab-btn" data-target="console" type="button">View Real-Time AI Feed &rarr;</button>
+        </div>
+
+        <div class="start-card">
+          <div class="card-header">
+            <div class="card-icon">&#9951;</div>
+            <h3>Mission Log & History Query</h3>
+          </div>
+          <p class="card-desc">
+            Query historical classification logs stored in the relational database. Filter by target category, confidence threshold, date ranges, and target distributions.
+          </p>
+          <div class="card-tags">
+            <span class="tag">PostgreSQL / SQLite</span>
+            <span class="tag">Paginated REST API</span>
+            <span class="tag">Chart.js Visuals</span>
+          </div>
+          <button class="btn-text-link switch-tab-btn" data-target="history" type="button">Access Mission Logs &rarr;</button>
+        </div>
+
+        <div class="start-card">
+          <div class="card-header">
+            <div class="card-icon">&#9881;</div>
+            <h3>Edge Sensor Node Fleet</h3>
+          </div>
+          <p class="card-desc">
+            Simulates background IoT radar edge sensors (`SIM-EDGE-01`) or integrates directly with real-world 24 GHz / 77 GHz FMCW millimeter-wave radar hardware.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Hardware Modular API</span>
+            <span class="tag">Node Telemetry</span>
+            <span class="tag">Status Daemon</span>
+          </div>
+          <button class="btn-text-link switch-tab-btn" data-target="diagnostics" type="button">View Fleet Diagnostics &rarr;</button>
+        </div>
+
+      </section>
+
+      <!-- Target Profiles Showcase -->
+      <section class="target-showcase">
+        <div class="panel-head">
+          <h2>Target Micro-Doppler Classification Profiles</h2>
+        </div>
+        <div class="profile-grid">
+          <div class="profile-card">
+            <div class="profile-title">🛸 Drone</div>
+            <div class="profile-signature">periodic rotor-blade flutter, wide micro-Doppler spread</div>
+            <div class="profile-meta">
+              <span>Velocity: 0 &ndash; 20 m/s</span>
+              <span>Typical Conf: 80% &ndash; 98%</span>
+            </div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-title">🦅 Bird</div>
+            <div class="profile-signature">irregular wingbeat modulation, low harmonic content</div>
+            <div class="profile-meta">
+              <span>Velocity: 2 &ndash; 15 m/s</span>
+              <span>Typical Conf: 55% &ndash; 90%</span>
+            </div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-title">🚶 Human</div>
+            <div class="profile-signature">gait-cycle limb swing, torso micro-motion harmonics</div>
+            <div class="profile-meta">
+              <span>Velocity: 0.5 &ndash; 3.5 m/s</span>
+              <span>Typical Conf: 65% &ndash; 95%</span>
+            </div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-title">🚗 Vehicle</div>
+            <div class="profile-signature">engine vibration harmonics, low spectral spread</div>
+            <div class="profile-meta">
+              <span>Velocity: 5 &ndash; 35 m/s</span>
+              <span>Typical Conf: 85% &ndash; 99%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Theoretical Principles Grid -->
+      <section class="theory-section">
+        <div class="panel-head">
+          <h2>Theoretical Principles & Micro-Doppler Physics</h2>
+        </div>
+        <div class="theory-grid">
+          <div class="theory-card">
+            <h4>Doppler Shift Equation</h4>
+            <div class="theory-formula">f_d = (2 &middot; v &middot; f_c) / c</div>
+            <p class="card-desc">Relates target radial velocity ($v$) and carrier frequency ($f_c = 24.125\text{ GHz}$) to received frequency shift.</p>
+          </div>
+          <div class="theory-card">
+            <h4>STFT Spectrogram Analysis</h4>
+            <div class="theory-formula">S(t,f) = |&int; x(&tau;)w(&tau;-t)e^(-j2&pi;f&tau;)d&tau;|&sup2;</div>
+            <p class="card-desc">Computes 64 frequency magnitude channels over sliding temporal windows ($N_{\text{fft}} = 64$) at 10 Hz.</p>
+          </div>
+          <div class="theory-card">
+            <h4>Micro-Motion Modulation</h4>
+            <div class="theory-formula">&Delta;f_micro &propto; f_rot &middot; r_blade</div>
+            <p class="card-desc">Captures secondary micro-motions (rotor blade rotation, wingbeats, gait cycles) unique to each target class.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+  <!-- ================= TAB 2: LIVE CONSOLE ================= -->
+  <section class="tab-pane" id="tab-console">
+    <main class="console-grid">
+
+      <!-- LEFT: Waterfall + telemetry -->
+      <section class="panel panel-waterfall">
+        <div class="panel-head">
+          <h2>Live Micro-Doppler Waterfall</h2>
+          <div class="panel-head-meta">
+            <span class="rate-badge" id="rateBadge">10 Hz</span>
+            <button class="btn btn-ghost" id="toggleSimBtn" type="button">Pause Feed</button>
+          </div>
+        </div>
+        <div class="waterfall-wrap">
+          <canvas id="waterfallCanvas"></canvas>
+          <div class="axis-label axis-label-x">micro-Doppler frequency (Hz) &rarr;</div>
+          <div class="axis-label axis-label-y">&larr; time</div>
+        </div>
+
+        <div class="telemetry-strip">
+          <div class="telemetry-cell">
+            <span class="telemetry-label">Doppler Shift</span>
+            <span class="telemetry-value" id="tDoppler">&mdash;</span>
+            <span class="telemetry-unit">Hz</span>
+          </div>
+          <div class="telemetry-cell">
+            <span class="telemetry-label">Radial Velocity</span>
+            <span class="telemetry-value" id="tVelocity">&mdash;</span>
+            <span class="telemetry-unit">m/s</span>
+          </div>
+          <div class="telemetry-cell">
+            <span class="telemetry-label">Return Power</span>
+            <span class="telemetry-value" id="tPower">&mdash;</span>
+            <span class="telemetry-unit">dB</span>
+          </div>
+          <div class="telemetry-cell">
+            <span class="telemetry-label">Threat Level</span>
+            <span class="telemetry-value telemetry-value-sm" id="tThreatLevel" style="color: #39ff9c;">NEUTRAL</span>
+            <span class="telemetry-unit" id="tThreatCode">CLEAR</span>
+          </div>
+          <div class="telemetry-cell">
+            <span class="telemetry-label">Active Node</span>
+            <span class="telemetry-value telemetry-value-sm" id="tNode">&mdash;</span>
+            <span class="telemetry-unit">&nbsp;</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Target Scope + Doppler trend + AI classification feed -->
+      <aside class="panel panel-sidebar">
+        <div class="panel-head">
+          <h2>Real-Time Target PPI Radar</h2>
+          <span class="rate-badge" id="scopeTargetBadge">Scanning...</span>
+        </div>
+        <div class="scope-wrap">
+          <canvas id="ppiScopeCanvas"></canvas>
+          <div class="scope-legend">
+            <span class="legend-item"><span class="legend-dot drone"></span> Drone</span>
+            <span class="legend-item"><span class="legend-dot bird"></span> Bird</span>
+            <span class="legend-item"><span class="legend-dot human"></span> Human</span>
+            <span class="legend-item"><span class="legend-dot vehicle"></span> Vehicle</span>
+            <span class="legend-item"><span class="legend-dot unknown"></span> Unknown</span>
+          </div>
+        </div>
+
+        <div class="panel-head" style="margin-top: 14px;">
+          <h2>Doppler Frequency Trend</h2>
+        </div>
+        <div class="trend-wrap">
+          <canvas id="trendChart"></canvas>
+        </div>
+
+        <div class="panel-head panel-head-feed">
+          <h2>AI Classification Feed</h2>
+          <span class="feed-count" id="feedCount">0 events</span>
+        </div>
+        <div class="classification-feed" id="classificationFeed">
+          <p class="feed-empty" id="feedEmpty">Awaiting model output&hellip;</p>
+        </div>
+      </aside>
+
+    </main>
+  </section>
+
+  <!-- ================= TAB 3: MISSION LOG ================= -->
+  <section class="tab-pane" id="tab-history">
+    <main class="history-main">
+
+      <section class="panel panel-filters">
+        <div class="panel-head">
+          <h2>Query Historical Classifications</h2>
+        </div>
+        <form id="filterForm" class="filter-form">
+          <div class="filter-field">
+            <label for="dateFrom">From</label>
+            <input type="date" id="dateFrom" name="date_from">
+          </div>
+          <div class="filter-field">
+            <label for="dateTo">To</label>
+            <input type="date" id="dateTo" name="date_to">
+          </div>
+          <div class="filter-field">
+            <label for="targetType">Target Type</label>
+            <select id="targetType" name="target_type">
+              <option value="All">All Targets</option>
+              <option value="Drone">Drone</option>
+              <option value="Bird">Bird</option>
+              <option value="Human">Human</option>
+              <option value="Vehicle">Vehicle</option>
+              <option value="Unknown">Unknown</option>
+            </select>
+          </div>
+          <div class="filter-field">
+            <label for="minConfidence">Min. Confidence</label>
+            <select id="minConfidence" name="min_confidence">
+              <option value="">Any</option>
+              <option value="0.5">&ge; 50%</option>
+              <option value="0.7">&ge; 70%</option>
+              <option value="0.9">&ge; 90%</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Run Query</button>
+          <button type="button" class="btn btn-ghost" id="resetFiltersBtn">Reset</button>
+        </form>
+      </section>
+
+      <section class="panel panel-summary">
+        <div class="panel-head">
+          <h2>Target Distribution</h2>
+        </div>
+        <div class="summary-wrap">
+          <canvas id="summaryChart"></canvas>
+        </div>
+      </section>
+
+      <section class="panel panel-results">
+        <div class="panel-head">
+          <h2>Results</h2>
+          <span class="feed-count" id="resultCount">0 records</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="resultsTable">
+            <thead>
+              <tr>
+                <th>Timestamp (UTC)</th>
+                <th>Node</th>
+                <th>Target Type</th>
+                <th>Confidence</th>
+                <th>Doppler (Hz)</th>
+                <th>Velocity (m/s)</th>
+                <th>Model</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <tr><td colspan="7" class="table-empty">Run a query to see historical classifications.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </section>
+
+    </main>
+  </section>
+
+  <!-- ================= TAB 4: SYSTEM DIAGNOSTICS ================= -->
+  <section class="tab-pane" id="tab-diagnostics">
+    <div class="start-container">
+
+      <section class="hero-card" style="border-left-color: var(--blue-chrome);">
+        <div class="hero-badge" style="color: var(--blue-chrome); border-color: rgba(111,183,201,0.3); background: rgba(111,183,201,0.08);">
+          <span class="badge-pulse" style="background: var(--blue-chrome); box-shadow: 0 0 8px var(--blue-chrome);"></span> SYSTEM HEALTH & FLEET MONITORS
+        </div>
+        <h1 class="hero-title">EDGE NODE DIAGNOSTICS & ENGINE STATUS</h1>
+        <p class="hero-subtitle">
+          Real-time status of backend service layers, SQLAlchemy database connections, IoT sensor node threads, and WebSocket message transport channels.
+        </p>
+      </section>
+
+      <!-- Diagnostics Health Cards Grid -->
+      <section class="metrics-ribbon">
+        <div class="metric-box">
+          <span class="metric-val" id="diagAppStatus">OK</span>
+          <span class="metric-lbl">Application Status</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-val" id="diagDbStatus">OK</span>
+          <span class="metric-lbl">Database (SQLAlchemy)</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-val" id="diagSimStatus">RUNNING</span>
+          <span class="metric-lbl">Simulator Engine</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-val" id="diagTransport">gevent / WS</span>
+          <span class="metric-lbl">WebSocket Transport</span>
+        </div>
+      </section>
+
+      <!-- Edge Nodes Fleet Table -->
+      <section class="target-showcase">
+        <div class="panel-head">
+          <h2>Registered Edge Radar Nodes</h2>
+          <button class="btn btn-ghost" id="refreshDiagBtn" type="button">Refresh Diagnostics</button>
+        </div>
+        <div class="table-wrap" style="margin-top: 16px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Node ID</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Last Seen (UTC)</th>
+              </tr>
+            </thead>
+            <tbody id="diagNodesBody">
+              <tr><td colspan="6" class="table-empty">Loading node diagnostics&hellip;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+</div>
+
+<footer class="console-footer">
+  <span>Edge Node: <strong id="footerNode">SIM-EDGE-01</strong></span>
+  <span class="dot-sep">&bull;</span>
+  <span>Model: <strong>sim-cnn-v1</strong></span>
+  <span class="dot-sep">&bull;</span>
+  <span>Samples processed: <strong id="footerSamples">0</strong></span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

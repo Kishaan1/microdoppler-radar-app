@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGMA-9 &middot; Operations Command Center</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="scanline-overlay" aria-hidden="true"></div>
+
+<!-- Header -->
+<header class="console-header">
+  <div class="brand">
+    <span class="brand-mark">&#9670;</span>
+    <div class="brand-text">
+      <h1>SIGMA-9</h1>
+      <p>Micro-Doppler Target Classification System</p>
+    </div>
+  </div>
+
+  <nav class="console-nav">
+    <a href="{{ url_for('start_page') }}" class="nav-link active">Operations Center</a>
+    <a href="{{ url_for('console_page') }}" class="nav-link">Live Console</a>
+    <a href="{{ url_for('history_page') }}" class="nav-link">Mission Log</a>
+  </nav>
+
+  <div class="conn-status">
+    <span class="conn-dot connected"></span>
+    <span>SYSTEM ONLINE</span>
+  </div>
+</header>
+
+<!-- Start Page Main Container -->
+<main class="start-container">
+
+  <!-- Hero Section -->
+  <section class="hero-card">
+    <div class="hero-badge"><span class="badge-pulse"></span> 24.125 GHz RF RADAR MATRIX ACTIVE</div>
+    <h1 class="hero-title">TACTICAL MICRO-DOPPLER SURVEILLANCE & AI CLASSIFICATION PORTAL</h1>
+    <p class="hero-subtitle">
+      Real-time radio-frequency spectral analysis, short-time Fourier transform (STFT) waterfall visualization, and automated deep target classification powered by high-frequency Doppler signatures.
+    </p>
+
+    <div class="hero-cta-group">
+      <a href="{{ url_for('console_page') }}" class="btn btn-primary btn-hero">
+        <span class="btn-icon">&#9654;</span> Launch Live Console
+      </a>
+      <a href="{{ url_for('history_page') }}" class="btn btn-ghost btn-hero">
+        <span class="btn-icon">&#9776;</span> Explore Mission Log
+      </a>
+      <a href="/healthz" target="_blank" class="btn btn-ghost btn-hero">
+        <span class="btn-icon">&#9881;</span> System Diagnostics
+      </a>
+    </div>
+  </section>
+
+  <!-- Metrics Ribbon -->
+  <section class="metrics-ribbon">
+    <div class="metric-box">
+      <span class="metric-val">24.125 GHz</span>
+      <span class="metric-lbl">Radar Carrier Freq</span>
+    </div>
+    <div class="metric-box">
+      <span class="metric-val">10 Hz</span>
+      <span class="metric-lbl">Telemetry Stream Rate</span>
+    </div>
+    <div class="metric-box">
+      <span class="metric-val">64 Bins</span>
+      <span class="metric-lbl">FFT Spectrogram Channels</span>
+    </div>
+    <div class="metric-box">
+      <span class="metric-val">sim-cnn-v1</span>
+      <span class="metric-lbl">Active ML Classifier Engine</span>
+    </div>
+  </section>
+
+  <!-- Module Cards Grid -->
+  <section class="start-grid">
+
+    <!-- Card 1 -->
+    <div class="start-card">
+      <div class="card-header">
+        <div class="card-icon">&#9638;</div>
+        <h3>Live Micro-Doppler Waterfall</h3>
+      </div>
+      <p class="card-desc">
+        Streams real-time 64-channel STFT frequency bin magnitudes at 10 Hz over WebSockets, rendering a resolution-independent scrolling waterfall spectrogram.
+      </p>
+      <div class="card-tags">
+        <span class="tag">HTML5 Canvas</span>
+        <span class="tag">WebSockets</span>
+        <span class="tag">10 Hz Feed</span>
+      </div>
+      <a href="{{ url_for('console_page') }}" class="card-link">Open Live Console &rarr;</a>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="start-card">
+      <div class="card-header">
+        <div class="card-icon">&#9889;</div>
+        <h3>AI Classification Engine</h3>
+      </div>
+      <p class="card-desc">
+        Processes radial velocity ($v$), Doppler frequency shift ($f_d$), and spectral texture variance ($\sigma^2$) to classify targets with real-time confidence scores.
+      </p>
+      <div class="card-tags">
+        <span class="tag">Rotor Blade Flutter</span>
+        <span class="tag">Wingbeat Gait</span>
+        <span class="tag">Confidence Scoring</span>
+      </div>
+      <a href="{{ url_for('console_page') }}" class="card-link">View Real-Time AI Feed &rarr;</a>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="start-card">
+      <div class="card-header">
+        <div class="card-icon">&#9951;</div>
+        <h3>Mission Log & History Query</h3>
+      </div>
+      <p class="card-desc">
+        Query historical classification logs stored in the relational database. Filter by target category, confidence threshold, date ranges, and target distributions.
+      </p>
+      <div class="card-tags">
+        <span class="tag">PostgreSQL / SQLite</span>
+        <span class="tag">Paginated REST API</span>
+        <span class="tag">Chart.js Visuals</span>
+      </div>
+      <a href="{{ url_for('history_page') }}" class="card-link">Access Mission Logs &rarr;</a>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="start-card">
+      <div class="card-header">
+        <div class="card-icon">&#9881;</div>
+        <h3>Edge Sensor Node Fleet</h3>
+      </div>
+      <p class="card-desc">
+        Simulates background IoT radar edge sensors (`SIM-EDGE-01`) or integrates directly with real-world 24 GHz / 77 GHz FMCW millimeter-wave radar hardware.
+      </p>
+      <div class="card-tags">
+        <span class="tag">Hardware Modular API</span>
+        <span class="tag">Node Telemetry</span>
+        <span class="tag">Status Daemon</span>
+      </div>
+      <a href="/api/nodes" target="_blank" class="card-link">Query Node Fleet API &rarr;</a>
+    </div>
+
+  </section>
+
+  <!-- Target Profiles Showcase -->
+  <section class="target-showcase">
+    <div class="panel-head">
+      <h2>Target Micro-Doppler Classification Profiles</h2>
+    </div>
+    <div class="profile-grid">
+      <div class="profile-card">
+        <div class="profile-title">🛸 Drone</div>
+        <div class="profile-signature">periodic rotor-blade flutter, wide micro-Doppler spread</div>
+        <div class="profile-meta">
+          <span>Velocity: 0 &ndash; 20 m/s</span>
+          <span>Typical Conf: 80% &ndash; 98%</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="profile-title">🦅 Bird</div>
+        <div class="profile-signature">irregular wingbeat modulation, low harmonic content</div>
+        <div class="profile-meta">
+          <span>Velocity: 2 &ndash; 15 m/s</span>
+          <span>Typical Conf: 55% &ndash; 90%</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="profile-title">🚶 Human</div>
+        <div class="profile-signature">gait-cycle limb swing, torso micro-motion harmonics</div>
+        <div class="profile-meta">
+          <span>Velocity: 0.5 &ndash; 3.5 m/s</span>
+          <span>Typical Conf: 65% &ndash; 95%</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="profile-title">🚗 Vehicle</div>
+        <div class="profile-signature">engine vibration harmonics, low spectral spread</div>
+        <div class="profile-meta">
+          <span>Velocity: 5 &ndash; 35 m/s</span>
+          <span>Typical Conf: 85% &ndash; 99%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="console-footer">
+  <span>System: <strong>SIGMA-9 Radar Operations Portal</strong></span>
+  <span class="dot-sep">&bull;</span>
+  <span>Model: <strong>sim-cnn-v1</strong></span>
+  <span class="dot-sep">&bull;</span>
+  <span>Carrier: <strong>24.125 GHz</strong></span>
+</footer>
+
+</body>
+</html>

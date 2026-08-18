@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission Log &middot; SIGMA-9 Radar Console</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="scanline-overlay" aria-hidden="true"></div>
+
+<header class="console-header">
+  <div class="brand">
+    <span class="brand-mark">&#9670;</span>
+    <div class="brand-text">
+      <h1>SIGMA-9</h1>
+      <p>Micro-Doppler Target Classification Console</p>
+    </div>
+  </div>
+
+  <nav class="console-nav">
+    <a href="{{ url_for('start_page') }}" class="nav-link">Operations Center</a>
+    <a href="{{ url_for('console_page') }}" class="nav-link">Live Console</a>
+    <a href="{{ url_for('history_page') }}" class="nav-link active">Mission Log</a>
+  </nav>
+</header>
+
+<main class="history-main">
+
+  <section class="panel panel-filters">
+    <div class="panel-head">
+      <h2>Query Historical Classifications</h2>
+    </div>
+    <form id="filterForm" class="filter-form">
+      <div class="filter-field">
+        <label for="dateFrom">From</label>
+        <input type="date" id="dateFrom" name="date_from">
+      </div>
+      <div class="filter-field">
+        <label for="dateTo">To</label>
+        <input type="date" id="dateTo" name="date_to">
+      </div>
+      <div class="filter-field">
+        <label for="targetType">Target Type</label>
+        <select id="targetType" name="target_type">
+          <option value="All">All Targets</option>
+          <option value="Drone">Drone</option>
+          <option value="Bird">Bird</option>
+          <option value="Human">Human</option>
+          <option value="Vehicle">Vehicle</option>
+          <option value="Unknown">Unknown</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="minConfidence">Min. Confidence</label>
+        <select id="minConfidence" name="min_confidence">
+          <option value="">Any</option>
+          <option value="0.5">&ge; 50%</option>
+          <option value="0.7">&ge; 70%</option>
+          <option value="0.9">&ge; 90%</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Run Query</button>
+      <button type="button" class="btn btn-ghost" id="resetFiltersBtn">Reset</button>
+    </form>
+  </section>
+
+  <section class="panel panel-summary">
+    <div class="panel-head">
+      <h2>Target Distribution</h2>
+    </div>
+    <div class="summary-wrap">
+      <canvas id="summaryChart"></canvas>
+    </div>
+  </section>
+
+  <section class="panel panel-results">
+    <div class="panel-head">
+      <h2>Results</h2>
+      <span class="feed-count" id="resultCount">0 records</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" id="resultsTable">
+        <thead>
+          <tr>
+            <th>Timestamp (UTC)</th>
+            <th>Node</th>
+            <th>Target Type</th>
+            <th>Confidence</th>
+            <th>Doppler (Hz)</th>
+            <th>Velocity (m/s)</th>
+            <th>Model</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+          <tr><td colspan="7" class="table-empty">Run a query to see historical classifications.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/history.js') }}"></script>
+</body>
+</html>

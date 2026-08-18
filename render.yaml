@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: sigma9-radar-console
+    env: docker
+    plan: starter
+    healthCheckPath: /healthz
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: RADAR_STREAM_HZ
+        value: "10"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sigma9-radar-db
+          property: connectionString
+
+databases:
+  - name: sigma9-radar-db
+    plan: starter
+    databaseName: radar_db
+    user: radar_user
