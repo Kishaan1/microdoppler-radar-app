@@ -1,5 +1,12 @@
 # SIGMA-9 — Tactical Micro-Doppler Radar Target Classification Console
 
+[![Live Application](https://img.shields.io/badge/Live%20Demo-Render-39ff9c?style=for-the-badge&logo=render&logoColor=black)](https://microdoppler-radar-app.onrender.com)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+
+**Live Operational Website:** 👉 **[https://microdoppler-radar-app.onrender.com](https://microdoppler-radar-app.onrender.com)**
+
+---
+
 A full-stack, cloud-ready web application simulating a real-time **Military-Grade Micro-Doppler Radar Target Classification & Perimeter Defense System**. Powered by 10 Hz WebSocket telemetry streaming, an HTML5 Canvas Waterfall Spectrogram, a 360° Target PPI Radar Scope, a deep ML classification engine (`mil-cnn-v2`), and a responsive multi-device HUD (`Laptop`, `Tablet`, `Mobile`).
 
 > **Note on Data Source & ML Architecture:** 
